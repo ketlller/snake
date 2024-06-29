@@ -18,6 +18,10 @@
         h1 {
             margin-top: 10px; /* Поднимаем заголовок выше */
         }
+        #username {
+            margin-top: 10px;
+            font-size: 20px;
+        }
         canvas {
             margin-top: 10px; /* Поднимаем игровое поле выше */
             position: relative;
@@ -32,7 +36,7 @@
             position: relative;
             width: 240px; /* Увеличено в 2 раза */
             height: 240px; /* Увеличено в 2 раза */
-            margin-top: 10px; /* Поднимаем кнопки управления выше */
+            margin-top: 20px; /* Поднимаем кнопки управления выше */
         }
         #controls button {
             width: 80px; /* Увеличено в 2 раза */
@@ -77,14 +81,20 @@
             background-color: red;
             color: white;
         }
+        #notification {
+            font-size: 18px;
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Snake Game</h1>
+    <div id="username"></div>
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
-        <button id="startGame" onclick="startGame()">Start</button>
+        <button id="startGame" onclick="startCountdown()">Start</button>
         <button id="stopGame" onclick="stopGame()">Stop</button>
     </div>
     <div id="controls">
@@ -93,11 +103,14 @@
         <button id="left" onclick="moveLeft()">◀</button>
         <button id="right" onclick="moveRight()">▶</button>
     </div>
+    <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
         const controls = document.getElementById('controls');
+        const notification = document.getElementById('notification');
+        const usernameDisplay = document.getElementById('username');
         let snake = [];
         let dx = 20;
         let dy = 0;
@@ -190,6 +203,21 @@
             } else if (beta < -15) {
                 moveUp();
             }
+        }
+
+        function startCountdown() {
+            let countdown = 3;
+            notification.textContent = "Управлять игрой можно водя пальцем по экрану.";
+            notification.style.display = 'block';
+            const countdownInterval = setInterval(() => {
+                notification.textContent = countdown;
+                countdown--;
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    notification.style.display = 'none';
+                    startGame();
+                }
+            }, 1000);
         }
 
         function startGame() {
@@ -341,6 +369,15 @@
                     generateFood();
                 }
             }
+        }
+
+        // Подключение через WebApp для получения имени пользователя Telegram
+        window.Telegram.WebApp.ready();
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+        if (user) {
+            usernameDisplay.textContent = `Player: ${user.first_name}`;
+        } else {
+            usernameDisplay.textContent = 'Player: Unknown';
         }
     </script>
 </body>
