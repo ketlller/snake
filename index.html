@@ -22,10 +22,39 @@
             display: none;
         }
         #controls {
-            margin-top: 20px;
             display: none;
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-top: 20px;
         }
-        button {
+        #controls button {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            padding: 0;
+            font-size: 16px;
+        }
+        #up {
+            top: 0;
+            left: 40px;
+        }
+        #down {
+            bottom: 0;
+            left: 40px;
+        }
+        #left {
+            left: 0;
+            top: 40px;
+        }
+        #right {
+            right: 0;
+            top: 40px;
+        }
+        #startControls {
+            margin-top: 20px;
+        }
+        #startControls button {
             padding: 10px 20px;
             font-size: 16px;
             margin: 5px;
@@ -37,10 +66,10 @@
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="controls">
-        <button onclick="moveLeft()">Left</button>
-        <button onclick="moveUp()">Up</button>
-        <button onclick="moveRight()">Right</button>
-        <button onclick="moveDown()">Down</button>
+        <button id="up" onclick="moveUp()">▲</button>
+        <button id="down" onclick="moveDown()">▼</button>
+        <button id="left" onclick="moveLeft()">◀</button>
+        <button id="right" onclick="moveRight()">▶</button>
     </div>
     <div id="startControls">
         <button onclick="startGame()">Start</button>
