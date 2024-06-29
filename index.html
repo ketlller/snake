@@ -30,40 +30,52 @@
         #controls {
             display: none;
             position: relative;
-            width: 240px;
-            height: 240px;
+            width: 240px; /* Увеличено в 2 раза */
+            height: 240px; /* Увеличено в 2 раза */
             margin-top: 10px; /* Поднимаем кнопки управления выше */
         }
         #controls button {
-            width: 80px;
-            height: 80px;
+            width: 80px; /* Увеличено в 2 раза */
+            height: 80px; /* Увеличено в 2 раза */
             position: absolute;
             padding: 0;
-            font-size: 24px;
+            font-size: 24px; /* Увеличено в 2 раза */
         }
         #up {
             top: 0;
-            left: 80px;
+            left: 80px; /* Центрировано */
         }
         #down {
             bottom: 0;
-            left: 80px;
+            left: 80px; /* Центрировано */
         }
         #left {
             left: 0;
-            top: 80px;
+            top: 80px; /* Центрировано */
         }
         #right {
             right: 0;
-            top: 80px;
+            top: 80px; /* Центрировано */
         }
         #startControls {
-            margin-top: 10px; /* Поднимаем кнопки старт/стоп выше */
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+            position: relative;
+            top: -40px; /* Поднимаем кнопки старт/стоп выше */
         }
         #startControls button {
             padding: 10px 20px;
             font-size: 16px;
             margin: 5px;
+        }
+        #startGame {
+            background-color: green;
+            color: white;
+        }
+        #stopGame {
+            background-color: red;
+            color: white;
         }
     </style>
 </head>
@@ -71,15 +83,15 @@
     <h1>Snake Game</h1>
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="startControls">
+        <button id="startGame" onclick="startGame()">Start</button>
+        <button id="stopGame" onclick="stopGame()">Stop</button>
+    </div>
     <div id="controls">
         <button id="up" onclick="moveUp()">▲</button>
         <button id="down" onclick="moveDown()">▼</button>
         <button id="left" onclick="moveLeft()">◀</button>
         <button id="right" onclick="moveRight()">▶</button>
-    </div>
-    <div id="startControls">
-        <button onclick="startGame()">Start</button>
-        <button onclick="stopGame()">Stop</button>
     </div>
     <script>
         const canvas = document.getElementById('gameCanvas');
