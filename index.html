@@ -13,15 +13,27 @@
             font-family: Arial, sans-serif;
         }
         canvas {
-            background-color: #000;
             margin-top: 20px;
+            position: relative;
+            z-index: 1;
         }
         #score {
             font-size: 24px;
             margin-top: 20px;
+            display: none;
         }
         #controls {
             margin-top: 20px;
+        }
+        #splashScreen {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            z-index: 2;
+        }
+        #splashScreen img {
+            width: 400px;
+            height: 400px;
         }
         button {
             padding: 10px 20px;
@@ -34,6 +46,9 @@
     <h1>Snake Game</h1>
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="splashScreen">
+        <img src="splash.png" alt="Splash Screen">
+    </div>
     <div id="controls">
         <button onclick="startGame()">Start</button>
         <button onclick="stopGame()">Stop</button>
@@ -42,21 +57,49 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
+        const splashScreen = document.getElementById('splashScreen');
         let snake = [];
-        let dx = 10;
+        let dx = 20;
         let dy = 0;
         let food = {x: 300, y: 300};
         let score = 0;
         let gameInterval;
         const snakeImage = new Image();
         snakeImage.src = 'snake.png'; // Используем локальное изображение
-        
+
+        const grassImage = new Image();
+        grassImage.src = 'grass.png'; // Используем изображение травы
+
         snakeImage.onload = function() {
             console.log('Snake image loaded');
         };
 
         snakeImage.onerror = function() {
             console.error('Failed to load snake image');
+        };
+
+        grassImage.onload = function() {
+            console.log('Grass image loaded');
+            // Отрисовываем заставку на canvas до начала игры
+            ctx.drawImage(grassImage, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(splashScreenImg, 0, 0, canvas.width, canvas.height);
+        };
+
+        grassImage.onerror = function() {
+            console.error('Failed to load grass image');
+        };
+
+        const splashScreenImg = new Image();
+        splashScreenImg.src = 'splash.png'; // Используем изображение заставки
+
+        splashScreenImg.onload = function() {
+            console.log('Splash screen image loaded');
+            // Отрисовываем заставку на canvas до начала игры
+            ctx.drawImage(splashScreenImg, 0, 0, canvas.width, canvas.height);
+        };
+
+        splashScreenImg.onerror = function() {
+            console.error('Failed to load splash screen image');
         };
 
         document.addEventListener('keydown', changeDirection);
@@ -92,12 +135,12 @@
             if (Math.abs(xDiff) > Math.abs(yDiff)) {
                 if (xDiff > 0) {
                     if (dx === 0) {
-                        dx = -10;
+                        dx = -20;
                         dy = 0;
                     }
                 } else {
                     if (dx === 0) {
-                        dx = 10;
+                        dx = 20;
                         dy = 0;
                     }
                 }
@@ -105,12 +148,12 @@
                 if (yDiff > 0) {
                     if (dy === 0) {
                         dx = 0;
-                        dy = -10;
+                        dy = -20;
                     }
                 } else {
                     if (dy === 0) {
                         dx = 0;
-                        dy = 10;
+                        dy = 20;
                     }
                 }
             }
@@ -119,15 +162,18 @@
         }
 
         function startGame() {
+            splashScreen.style.display = 'none';
+            canvas.style.display = 'block';
+            scoreDisplay.style.display = 'block';
             clearInterval(gameInterval); // Clear any existing intervals
             snake = [
                 {x: 200, y: 200},
-                {x: 190, y: 200},
                 {x: 180, y: 200},
-                {x: 170, y: 200},
                 {x: 160, y: 200},
+                {x: 140, y: 200},
+                {x: 120, y: 200},
             ];
-            dx = 10;
+            dx = 20;
             dy = 0;
             score = 0;
             scoreDisplay.textContent = 'Score: ' + score;
@@ -156,15 +202,14 @@
         }
 
         function clearCanvas() {
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(grassImage, 0, 0, canvas.width, canvas.height); // Используем изображение травы как фон
         }
 
         function drawSnake() {
             console.log('Drawing snake');
             snake.forEach(snakePart => {
                 console.log(`Drawing snake part at (${snakePart.x}, ${snakePart.y})`);
-                ctx.drawImage(snakeImage, snakePart.x, snakePart.y, 10, 10);
+                ctx.drawImage(snakeImage, snakePart.x, snakePart.y, 20, 20);
             });
         }
 
@@ -187,29 +232,29 @@
             const DOWN_KEY = 40;
 
             const keyPressed = event.keyCode;
-            const goingUp = dy === -10;
-            const goingDown = dy === 10;
-            const goingRight = dx === 10;
-            const goingLeft = dx === -10;
+            const goingUp = dy === -20;
+            const goingDown = dy === 20;
+            const goingRight = dx === 20;
+            const goingLeft = dx === -20;
 
             if (keyPressed === LEFT_KEY && !goingRight) {
-                dx = -10;
+                dx = -20;
                 dy = 0;
             }
 
             if (keyPressed === UP_KEY && !goingDown) {
                 dx = 0;
-                dy = -10;
+                dy = -20;
             }
 
             if (keyPressed === RIGHT_KEY && !goingLeft) {
-                dx = 10;
+                dx = 20;
                 dy = 0;
             }
 
             if (keyPressed === DOWN_KEY && !goingUp) {
                 dx = 0;
-                dy = 10;
+                dy = 20;
             }
         }
 
@@ -228,12 +273,12 @@
 
         function drawFood() {
             ctx.fillStyle = 'red';
-            ctx.fillRect(food.x, food.y, 10, 10);
+            ctx.fillRect(food.x, food.y, 20, 20);
         }
 
         function generateFood() {
-            food.x = Math.floor(Math.random() * 40) * 10;
-            food.y = Math.floor(Math.random() * 40) * 10;
+            food.x = Math.floor(Math.random() * 20) * 20;
+            food.y = Math.floor(Math.random() * 20) * 20;
 
             // Ensure food does not spawn on the snake
             for (let i = 0; i < snake.length; i++) {
