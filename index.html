@@ -11,48 +11,54 @@
             align-items: center;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            overflow: hidden; /* Предотвращаем прокрутку страницы */
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-top: 10px; /* Поднимаем заголовок выше */
         }
         canvas {
-            margin-top: 20px;
+            margin-top: 10px; /* Поднимаем игровое поле выше */
             position: relative;
         }
         #score {
             font-size: 24px;
-            margin-top: 20px;
+            margin-top: 10px; /* Поднимаем счет выше */
             display: none;
         }
         #controls {
             display: none;
             position: relative;
-            width: 240px; /* Увеличено в 2 раза */
-            height: 240px; /* Увеличено в 2 раза */
-            margin-top: 20px;
+            width: 240px;
+            height: 240px;
+            margin-top: 10px; /* Поднимаем кнопки управления выше */
         }
         #controls button {
-            width: 80px; /* Увеличено в 2 раза */
-            height: 80px; /* Увеличено в 2 раза */
+            width: 80px;
+            height: 80px;
             position: absolute;
             padding: 0;
-            font-size: 24px; /* Увеличено в 2 раза */
+            font-size: 24px;
         }
         #up {
             top: 0;
-            left: 80px; /* Центрировано */
+            left: 80px;
         }
         #down {
             bottom: 0;
-            left: 80px; /* Центрировано */
+            left: 80px;
         }
         #left {
             left: 0;
-            top: 80px; /* Центрировано */
+            top: 80px;
         }
         #right {
             right: 0;
-            top: 80px; /* Центрировано */
+            top: 80px;
         }
         #startControls {
-            margin-top: 20px;
+            margin-top: 10px; /* Поднимаем кнопки старт/стоп выше */
         }
         #startControls button {
             padding: 10px 20px;
@@ -105,6 +111,11 @@
         };
 
         document.addEventListener('keydown', changeDirection);
+
+        // Предотвращаем прокрутку страницы при управлении игрой
+        document.addEventListener('touchmove', function(event) {
+            event.preventDefault();
+        }, { passive: false });
 
         // Touch event listeners for mobile devices
         document.addEventListener('touchstart', handleTouchStart, false);
