@@ -15,7 +15,6 @@
         canvas {
             margin-top: 20px;
             position: relative;
-            z-index: 1;
         }
         #score {
             font-size: 24px;
@@ -24,16 +23,6 @@
         }
         #controls {
             margin-top: 20px;
-        }
-        #splashScreen {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            z-index: 2;
-        }
-        #splashScreen img {
-            width: 400px;
-            height: 400px;
         }
         button {
             padding: 10px 20px;
@@ -46,9 +35,6 @@
     <h1>Snake Game</h1>
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <div id="splashScreen">
-        <img src="splash.png" alt="Splash Screen">
-    </div>
     <div id="controls">
         <button onclick="startGame()">Start</button>
         <button onclick="stopGame()">Stop</button>
@@ -57,7 +43,6 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
-        const splashScreen = document.getElementById('splashScreen');
         let snake = [];
         let dx = 20;
         let dy = 0;
@@ -69,25 +54,6 @@
 
         const grassImage = new Image();
         grassImage.src = 'grass.png'; // Используем изображение травы
-
-        snakeImage.onload = function() {
-            console.log('Snake image loaded');
-        };
-
-        snakeImage.onerror = function() {
-            console.error('Failed to load snake image');
-        };
-
-        grassImage.onload = function() {
-            console.log('Grass image loaded');
-            // Отрисовываем заставку на canvas до начала игры
-            ctx.drawImage(grassImage, 0, 0, canvas.width, canvas.height);
-            ctx.drawImage(splashScreenImg, 0, 0, canvas.width, canvas.height);
-        };
-
-        grassImage.onerror = function() {
-            console.error('Failed to load grass image');
-        };
 
         const splashScreenImg = new Image();
         splashScreenImg.src = 'splash.png'; // Используем изображение заставки
@@ -162,7 +128,6 @@
         }
 
         function startGame() {
-            splashScreen.style.display = 'none';
             canvas.style.display = 'block';
             scoreDisplay.style.display = 'block';
             clearInterval(gameInterval); // Clear any existing intervals
