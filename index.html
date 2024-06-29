@@ -23,6 +23,7 @@
         }
         #controls {
             margin-top: 20px;
+            display: none;
         }
         button {
             padding: 10px 20px;
@@ -36,6 +37,12 @@
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="controls">
+        <button onclick="moveLeft()">Left</button>
+        <button onclick="moveUp()">Up</button>
+        <button onclick="moveRight()">Right</button>
+        <button onclick="moveDown()">Down</button>
+    </div>
+    <div id="startControls">
         <button onclick="startGame()">Start</button>
         <button onclick="stopGame()">Stop</button>
     </div>
@@ -43,6 +50,7 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
+        const controls = document.getElementById('controls');
         let snake = [];
         let dx = 20;
         let dy = 0;
@@ -60,7 +68,6 @@
 
         splashScreenImg.onload = function() {
             console.log('Splash screen image loaded');
-            // Отрисовываем заставку на canvas до начала игры
             ctx.drawImage(splashScreenImg, 0, 0, canvas.width, canvas.height);
         };
 
@@ -73,6 +80,9 @@
         // Touch event listeners for mobile devices
         document.addEventListener('touchstart', handleTouchStart, false);
         document.addEventListener('touchmove', handleTouchMove, false);
+
+        // Device orientation event listener
+        window.addEventListener('deviceorientation', handleOrientation);
 
         let xDown = null;
         let yDown = null;
@@ -100,36 +110,40 @@
 
             if (Math.abs(xDiff) > Math.abs(yDiff)) {
                 if (xDiff > 0) {
-                    if (dx === 0) {
-                        dx = -20;
-                        dy = 0;
-                    }
+                    moveLeft();
                 } else {
-                    if (dx === 0) {
-                        dx = 20;
-                        dy = 0;
-                    }
+                    moveRight();
                 }
             } else {
                 if (yDiff > 0) {
-                    if (dy === 0) {
-                        dx = 0;
-                        dy = -20;
-                    }
+                    moveUp();
                 } else {
-                    if (dy === 0) {
-                        dx = 0;
-                        dy = 20;
-                    }
+                    moveDown();
                 }
             }
             xDown = null;
             yDown = null;
         }
 
+        function handleOrientation(event) {
+            const beta = event.beta; // X-axis rotation
+            const gamma = event.gamma; // Y-axis rotation
+
+            if (gamma > 15) {
+                moveRight();
+            } else if (gamma < -15) {
+                moveLeft();
+            } else if (beta > 15) {
+                moveDown();
+            } else if (beta < -15) {
+                moveUp();
+            }
+        }
+
         function startGame() {
             canvas.style.display = 'block';
             scoreDisplay.style.display = 'block';
+            controls.style.display = 'block';
             clearInterval(gameInterval); // Clear any existing intervals
             snake = [
                 {x: 200, y: 200},
@@ -203,21 +217,45 @@
             const goingLeft = dx === -20;
 
             if (keyPressed === LEFT_KEY && !goingRight) {
-                dx = -20;
-                dy = 0;
+                moveLeft();
             }
 
             if (keyPressed === UP_KEY && !goingDown) {
-                dx = 0;
-                dy = -20;
+                moveUp();
             }
 
             if (keyPressed === RIGHT_KEY && !goingLeft) {
-                dx = 20;
-                dy = 0;
+                moveRight();
             }
 
             if (keyPressed === DOWN_KEY && !goingUp) {
+                moveDown();
+            }
+        }
+
+        function moveLeft() {
+            if (dx === 0) {
+                dx = -20;
+                dy = 0;
+            }
+        }
+
+        function moveRight() {
+            if (dx === 0) {
+                dx = 20;
+                dy = 0;
+            }
+        }
+
+        function moveUp() {
+            if (dy === 0) {
+                dx = 0;
+                dy = -20;
+            }
+        }
+
+        function moveDown() {
+            if (dy === 0) {
                 dx = 0;
                 dy = 20;
             }
