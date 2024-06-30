@@ -117,6 +117,19 @@
         <button id="right" onclick="moveRight()">▶</button>
     </div>
     <script>
+
+        Telegram.WebApp.ready();
+
+        const user = Telegram.WebApp.initDataUnsafe.user;
+
+        const userInfoDiv = document.getElementById('userInfo');
+        userInfoDiv.innerHTML = `
+            
+            <center>User: ${user.username}</center>
+           
+        `;
+
+        
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
