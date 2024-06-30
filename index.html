@@ -393,14 +393,7 @@
         `;
 
         
-        Telegram.WebApp.onEvent('auth', function() {
-            const user = Telegram.WebApp.initDataUnsafe.user;
-            if (user) {
-                usernameDisplay.textContent = `Player: ${user.first_name}`;
-            } else {
-                usernameDisplay.textContent = 'Player: Unknown';
-            }
-        });
+        
 
         Telegram.WebApp.ready();
     </script>
