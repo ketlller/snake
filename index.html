@@ -380,6 +380,19 @@
         }
 
         // Подключение через WebApp для получения имени пользователя Telegram
+
+        Telegram.WebApp.ready();
+
+        const user = Telegram.WebApp.initDataUnsafe.user;
+
+        const userInfoDiv = document.getElementById('userInfo');
+        userInfoDiv.innerHTML = `
+            
+            <center>User: ${user.username}</center>
+           
+        `;
+
+        
         Telegram.WebApp.onEvent('auth', function() {
             const user = Telegram.WebApp.initDataUnsafe.user;
             if (user) {
