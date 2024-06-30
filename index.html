@@ -63,12 +63,18 @@
         }
         #startControls {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #buttons {
+            display: flex;
             justify-content: space-between;
             width: 400px;
             position: relative;
             top: 20px; /* Опускаем кнопки старт/стоп вниз на 20 пикселей */
         }
-        #startControls button {
+        #buttons button {
             padding: 10px 20px;
             font-size: 16px;
             margin: 5px;
@@ -84,7 +90,7 @@
         #notification {
             font-size: 18px;
             color: red;
-            display: none;
+            text-align: center;
         }
     </style>
 </head>
@@ -94,8 +100,11 @@
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
-        <button id="startGame" onclick="startCountdown()">Start</button>
-        <button id="stopGame" onclick="stopGame()">Stop</button>
+        <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
+        <div id="buttons">
+            <button id="startGame" onclick="startCountdown()">Start</button>
+            <button id="stopGame" onclick="stopGame()">Stop</button>
+        </div>
     </div>
     <div id="controls">
         <button id="up" onclick="moveUp()">▲</button>
@@ -103,7 +112,6 @@
         <button id="left" onclick="moveLeft()">◀</button>
         <button id="right" onclick="moveRight()">▶</button>
     </div>
-    <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
