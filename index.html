@@ -115,26 +115,30 @@
         <button id="left" onclick="moveLeft()">◀</button>
         <button id="right" onclick="moveRight()">▶</button>
     </div>
-    <script>
 
+    <!-- Adding audio elements for game sounds -->
+    <audio id="gameOverSound" src="gameOver.mp3"></audio>
+    <audio id="moveSound" src="move.mp3"></audio>
+    <audio id="scoreSound" src="score.mp3"></audio>
+
+    <script>
         Telegram.WebApp.ready();
 
         const user = Telegram.WebApp.initDataUnsafe.user;
 
         const userInfoDiv = document.getElementById('userInfo');
         userInfoDiv.innerHTML = `
-            
             <center>User: ${user.username}</center>
-           
         `;
 
-        
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
         const controls = document.getElementById('controls');
         const notification = document.getElementById('notification');
-        const usernameDisplay = document.getElementById('username');
+        const gameOverSound = document.getElementById('gameOverSound');
+        const moveSound = document.getElementById('moveSound');
+        const scoreSound = document.getElementById('scoreSound');
         let snake = [];
         let dx = 20;
         let dy = 0;
@@ -272,6 +276,7 @@
         function main() {
             if (didGameEnd()) {
                 stopGame();
+                gameOverSound.play(); // Play game over sound
                 alert('Game Over! Your score is ' + score);
                 return;
             }
@@ -302,6 +307,7 @@
 
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
+                scoreSound.play(); // Play score sound
                 generateFood();
             } else {
                 snake.pop();
@@ -341,6 +347,7 @@
             if (dx === 0) {
                 dx = -20;
                 dy = 0;
+                moveSound.play(); // Play move sound
             }
         }
 
@@ -348,6 +355,7 @@
             if (dx === 0) {
                 dx = 20;
                 dy = 0;
+                moveSound.play(); // Play move sound
             }
         }
 
@@ -355,6 +363,7 @@
             if (dy === 0) {
                 dx = 0;
                 dy = -20;
+                moveSound.play(); // Play move sound
             }
         }
 
@@ -362,6 +371,7 @@
             if (dy === 0) {
                 dx = 0;
                 dy = 20;
+                moveSound.play(); // Play move sound
             }
         }
 
@@ -394,8 +404,6 @@
                 }
             }
         }
-
-        
     </script>
 </body>
 </html>
