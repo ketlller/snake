@@ -19,8 +19,8 @@
             margin-top: 10px; /* Поднимаем заголовок выше */
         }
         #username {
-            margin-top: 100px;
-            font-size: 200px;
+            margin-top: 10px;
+            font-size: 20px;
         }
         canvas {
             margin-top: 10px; /* Поднимаем игровое поле выше */
@@ -96,6 +96,7 @@
 </head>
 <body>
     <h1>Snake Game</h1>
+    <div id="username">Player: Unknown</div>
     <div id="score">Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
@@ -379,22 +380,14 @@
         }
 
         // Подключение через WebApp для получения имени пользователя Telegram
-
-        Telegram.WebApp.ready();
-
-        const user = Telegram.WebApp.initDataUnsafe.user;
-
-        const userInfoDiv = document.getElementById('userInfo');
-        userInfoDiv.innerHTML = `
-            
-            <center>User: ${user.username}</center>
-           
-        `;
-
-        
-        
-
-        
+        Telegram.WebApp.ready(function() {
+            const user = Telegram.WebApp.initDataUnsafe.user;
+            if (user) {
+                usernameDisplay.textContent = `Player: ${user.first_name}`;
+            } else {
+                usernameDisplay.textContent = 'Player: Unknown';
+            }
+        });
     </script>
 </body>
 </html>
