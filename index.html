@@ -206,7 +206,7 @@
         }
 
         function startCountdown() {
-            let countdown = 3;
+            let countdown = 4;
             notification.textContent = "Управлять игрой можно водя пальцем по экрану.";
             notification.style.display = 'block';
             const countdownInterval = setInterval(() => {
@@ -217,7 +217,7 @@
                     notification.style.display = 'none';
                     startGame();
                 }
-            }, 1000);
+            }, 3000);
         }
 
         function startGame() {
