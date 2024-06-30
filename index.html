@@ -371,14 +371,34 @@
             }
         }
 
-        // Подключение через WebApp для получения имени пользователя Telegram
-        window.Telegram.WebApp.ready();
-        const user = window.Telegram.WebApp.initDataUnsafe.user;
-        if (user) {
-            usernameDisplay.textContent = `Player: ${user.first_name}`;
-        } else {
-            usernameDisplay.textContent = 'Player: Unknown';
-        }
+        Telegram.WebApp.ready();
+
+        const user = Telegram.WebApp.initDataUnsafe.user;
+
+        const userInfoDiv = document.getElementById('userInfo');
+        userInfoDiv.innerHTML = `
+            
+            <center>User: ${user.username}</center>
+           
+        `;
+
+         
+
+
+        
+        // Получаем изображение
+        const image = document.querySelector('.button__img img');
+
+        // Добавляем обработчик событий для клика
+        image.addEventListener('click', () => {
+            // Добавляем класс для анимации вращения
+            image.classList.add('rotate');
+
+            // Удаляем класс после завершения анимации для возможности повторного клика
+            image.addEventListener('animationend', () => {
+                image.classList.remove('rotate');
+            }, { once: true });
+        });
     </script>
 </body>
 </html>
