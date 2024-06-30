@@ -92,17 +92,15 @@
             color: red;
             text-align: center;
         }
-        #totalScore {
-            font-size: 18px;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    
     <h1>Snake Game</h1>
-    <div id="username">Player: Unknown</div>
+    <div class="user-info" id="userInfo"></div>
     <div id="score">Score: 0</div>
-    <div id="totalScore">Total Score: 0</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
         <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
@@ -118,20 +116,31 @@
         <button id="right" onclick="moveRight()">▶</button>
     </div>
     <script>
+
+        Telegram.WebApp.ready();
+
+        const user = Telegram.WebApp.initDataUnsafe.user;
+
+        const userInfoDiv = document.getElementById('userInfo');
+        userInfoDiv.innerHTML = `
+            
+            <center>User: ${user.username}</center>
+           
+        `;
+
+        
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
         const controls = document.getElementById('controls');
         const notification = document.getElementById('notification');
         const usernameDisplay = document.getElementById('username');
-        const totalScoreDisplay = document.getElementById('totalScore');
         let snake = [];
         let dx = 20;
         let dy = 0;
         let food = {x: 300, y: 300};
         let score = 0;
         let gameInterval;
-        let telegramId = null;
         const snakeImage = new Image();
         snakeImage.src = 'snake.png'; // Используем локальное изображение
 
@@ -258,9 +267,6 @@
 
         function stopGame() {
             clearInterval(gameInterval);
-            if (telegramId) {
-                saveScore(telegramId, score);
-            }
         }
 
         function main() {
@@ -389,54 +395,7 @@
             }
         }
 
-        // Сохранение результата игры в базу данных
-        async function saveScore(telegram_id, score) {
-            try {
-                const response = await fetch('/save-score', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ telegram_id, score })
-                });
-                const result = await response.json();
-                if (result.error) {
-                    console.error(result.error);
-                } else {
-                    console.log(result.message);
-                    fetchTotalScore(telegram_id);
-                }
-            } catch (error) {
-                console.error('Error saving score:', error);
-            }
-        }
-
-        // Получение общего количества очков из базы данных
-        async function fetchTotalScore(telegram_id) {
-            try {
-                const response = await fetch(`/get-total-score/${telegram_id}`);
-                const result = await response.json();
-                if (result.error) {
-                    console.error(result.error);
-                } else {
-                    totalScoreDisplay.textContent = `Total Score: ${result.total_score}`;
-                }
-            } catch (error) {
-                console.error('Error fetching total score:', error);
-            }
-        }
-
-        // Подключение через WebApp для получения имени пользователя Telegram
-        Telegram.WebApp.ready(function() {
-            const user = Telegram.WebApp.initDataUnsafe.user;
-            if (user) {
-                usernameDisplay.textContent = `Player: ${user.first_name}`;
-                telegramId = user.id;
-                fetchTotalScore(telegramId);
-            } else {
-                usernameDisplay.textContent = 'Player: Unknown';
-            }
-        });
+        
     </script>
 </body>
 </html>
