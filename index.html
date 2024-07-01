@@ -104,7 +104,7 @@
     
     <h1>Snake Game</h1>
     <div class="user-info" id="userInfo"></div>
-    <div id="score">Score: 0</div>
+    <div id="score">Score: 0 coin</div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
         <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
@@ -276,7 +276,7 @@
             dx = 20;
             dy = 0;
             score = 0;
-            scoreDisplay.textContent = 'Score: ' + score;
+            scoreDisplay.textContent = 'Score: ' + score + ' coins';
             generateFood();
             console.log('Game started');
             gameInterval = setInterval(main, 100);
@@ -292,7 +292,7 @@
             if (didGameEnd()) {
                 stopGame();
                 if (soundEnabled) gameOverSound.play(); // Play game over sound
-                alert('Game Over! Your score is ' + score);
+                alert('Game Over! Your score is ' + score + ' coins');
                 return;
             }
 
@@ -301,7 +301,7 @@
             advanceSnake();
             drawSnake();
 
-            scoreDisplay.textContent = 'Score: ' + score;
+            scoreDisplay.textContent = 'Score: ' + score + ' coins';
         }
 
         function clearCanvas() {
