@@ -111,7 +111,7 @@
     <h1>Snake Game</h1>
     <div class="user-info" id="userInfo"></div>
     <div id="score">Score: 0</div>
-    <div id="timer">Time: 30s</div> <!-- Таймер игры -->
+    <div id="timer">Time: 50s</div> <!-- Таймер игры -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
         <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
@@ -165,8 +165,14 @@
         let gameTimeout;
         let soundEnabled = true;
         let timerInterval; // Интервал для таймера
-        const snakeImage = new Image();
-        snakeImage.src = 'snake.png'; // Используем локальное изображение
+        const snakeHeadImage = new Image();
+        snakeHeadImage.src = 'snake_head.png'; // Используем изображение головы змеи
+
+        const snakeBodyImage = new Image();
+        snakeBodyImage.src = 'snake_body.png'; // Используем изображение тела змеи
+
+        const foodImage = new Image();
+        foodImage.src = 'coin.png'; // Используем изображение монеты
 
         const grassImage = new Image();
         grassImage.src = 'grass.png'; // Используем изображение травы
@@ -288,12 +294,12 @@
             dy = 0;
             score = 0;
             scoreDisplay.textContent = 'Score: ' + score;
-            timerDisplay.textContent = 'Time: 30s'; // Сбросить таймер
+            timerDisplay.textContent = 'Time: 50s'; // Сбросить таймер
             generateFood();
             console.log('Game started');
             gameInterval = setInterval(main, 100);
-            gameTimeout = setTimeout(endGameWin, 30000); // Set game duration to 50 seconds
-            startTimer(30); // Запустить таймер
+            gameTimeout = setTimeout(endGameWin, 50000); // Set game duration to 50 seconds
+            startTimer(50); // Запустить таймер
         }
 
         function stopGame() {
@@ -324,9 +330,13 @@
 
         function drawSnake() {
             console.log('Drawing snake');
-            snake.forEach(snakePart => {
+            snake.forEach((snakePart, index) => {
                 console.log(`Drawing snake part at (${snakePart.x}, ${snakePart.y})`);
-                ctx.drawImage(snakeImage, snakePart.x, snakePart.y, 20, 20);
+                if (index === 0) {
+                    ctx.drawImage(snakeHeadImage, snakePart.x, snakePart.y, 20, 20);
+                } else {
+                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 20, 20);
+                }
             });
         }
 
@@ -418,8 +428,7 @@
         }
 
         function drawFood() {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(food.x, food.y, 20, 20);
+            ctx.drawImage(foodImage, food.x, food.y, 20, 20);
         }
 
         function generateFood() {
