@@ -76,8 +76,7 @@
         }
         #buttons {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: space-between;
             width: 400px;
             position: relative;
             top: -4px; /* Опускаем кнопки старт/стоп на 2 миллиметра (2 мм = 6 пикселей) */
@@ -92,16 +91,19 @@
             background-color: green;
             color: white;
             margin-top: 9px; /* Опускаем кнопку Start на 3 миллиметра (3 мм = 9 пикселей) */
+            align-self: flex-start; /* Перемещаем кнопку Start к левому краю */
         }
         #stopGame {
             background-color: red;
             color: white;
             margin-top: 5px; /* Размещаем кнопку Stop под кнопкой Start */
+            align-self: flex-start; /* Перемещаем кнопку Stop к левому краю */
         }
         #toggleSound {
             background-color: blue;
             color: white;
             margin-top: 9px; /* Опускаем кнопку On/Off Sound на 3 миллиметра (3 мм = 9 пикселей) */
+            align-self: flex-end; /* Перемещаем кнопку On/Off Sound к правому краю */
         }
         #notification {
             font-size: 18px;
