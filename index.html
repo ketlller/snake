@@ -87,6 +87,10 @@
             background-color: red;
             color: white;
         }
+        #toggleSound {
+            background-color: blue;
+            color: white;
+        }
         #notification {
             font-size: 18px;
             color: red;
@@ -107,6 +111,7 @@
         <div id="buttons">
             <button id="startGame" onclick="startCountdown()">Start</button>
             <button id="stopGame" onclick="stopGame()">Stop</button>
+            <button id="toggleSound" onclick="toggleSound()">Toggle Sound</button>
         </div>
     </div>
     <div id="controls">
@@ -120,6 +125,8 @@
     <audio id="gameOverSound" src="gameOver.mp3"></audio>
     <audio id="moveSound" src="move.mp3"></audio>
     <audio id="scoreSound" src="score.mp3"></audio>
+    <audio id="startSound" src="start.mp3"></audio>
+    <audio id="winSound" src="win.mp3"></audio>
 
     <script>
         Telegram.WebApp.ready();
@@ -139,12 +146,16 @@
         const gameOverSound = document.getElementById('gameOverSound');
         const moveSound = document.getElementById('moveSound');
         const scoreSound = document.getElementById('scoreSound');
+        const startSound = document.getElementById('startSound');
+        const winSound = document.getElementById('winSound');
         let snake = [];
         let dx = 20;
         let dy = 0;
         let food = {x: 300, y: 300};
         let score = 0;
         let gameInterval;
+        let gameTimeout;
+        let soundEnabled = true;
         const snakeImage = new Image();
         snakeImage.src = 'snake.png'; // Используем локальное изображение
 
@@ -249,10 +260,12 @@
         }
 
         function startGame() {
+            if (soundEnabled) startSound.play(); // Play start sound
             canvas.style.display = 'block';
             scoreDisplay.style.display = 'block';
             controls.style.display = 'block';
             clearInterval(gameInterval); // Clear any existing intervals
+            clearTimeout(gameTimeout); // Clear any existing timeouts
             snake = [
                 {x: 200, y: 200},
                 {x: 180, y: 200},
@@ -267,16 +280,18 @@
             generateFood();
             console.log('Game started');
             gameInterval = setInterval(main, 100);
+            gameTimeout = setTimeout(endGameWin, 50000); // Set game duration to 50 seconds
         }
 
         function stopGame() {
             clearInterval(gameInterval);
+            clearTimeout(gameTimeout);
         }
 
         function main() {
             if (didGameEnd()) {
                 stopGame();
-                gameOverSound.play(); // Play game over sound
+                if (soundEnabled) gameOverSound.play(); // Play game over sound
                 alert('Game Over! Your score is ' + score);
                 return;
             }
@@ -307,7 +322,7 @@
 
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
-                scoreSound.play(); // Play score sound
+                if (soundEnabled) scoreSound.play(); // Play score sound
                 generateFood();
             } else {
                 snake.pop();
@@ -347,7 +362,7 @@
             if (dx === 0) {
                 dx = -20;
                 dy = 0;
-                moveSound.play(); // Play move sound
+                if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
 
@@ -355,7 +370,7 @@
             if (dx === 0) {
                 dx = 20;
                 dy = 0;
-                moveSound.play(); // Play move sound
+                if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
 
@@ -363,7 +378,7 @@
             if (dy === 0) {
                 dx = 0;
                 dy = -20;
-                moveSound.play(); // Play move sound
+                if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
 
@@ -371,7 +386,7 @@
             if (dy === 0) {
                 dx = 0;
                 dy = 20;
-                moveSound.play(); // Play move sound
+                if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
 
@@ -403,6 +418,17 @@
                     generateFood();
                 }
             }
+        }
+
+        function endGameWin() {
+            stopGame();
+            if (soundEnabled) winSound.play(); // Play win sound
+            alert('You win! Your score is ' + score);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            alert('Sound ' + (soundEnabled ? 'enabled' : 'disabled'));
         }
     </script>
 </body>
