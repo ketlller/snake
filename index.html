@@ -165,6 +165,7 @@
         let gameTimeout;
         let soundEnabled = true;
         let timerInterval; // Интервал для таймера
+        let headRotation = 0; // Поворот головы змеи
         const snakeHeadImage = new Image();
         snakeHeadImage.src = 'snake_head.png'; // Используем изображение головы змеи
 
@@ -292,6 +293,7 @@
             ];
             dx = 20;
             dy = 0;
+            headRotation = 0; // Начальное направление головы (вперед)
             score = 0;
             scoreDisplay.textContent = 'Score: ' + score;
             timerDisplay.textContent = 'Time: 15s'; // Сбросить таймер
@@ -333,9 +335,9 @@
             snake.forEach((snakePart, index) => {
                 console.log(`Drawing snake part at (${snakePart.x}, ${snakePart.y})`);
                 if (index === 0) {
-                    ctx.drawImage(snakeHeadImage, snakePart.x, snakePart.y, 40, 40); // Увеличено в 2 раза
+                    drawRotatedImage(ctx, snakeHeadImage, snakePart.x, snakePart.y, 40, 40, headRotation); // Увеличено в 2 раза и поворот головы
                 } else {
-                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 40, 40); // Увеличено в 2 раза
+                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 60, 60); // Увеличено в 3 раза для хвоста
                 }
             });
         }
@@ -386,6 +388,7 @@
             if (dx === 0) {
                 dx = -20;
                 dy = 0;
+                headRotation = 270; // Поворот головы влево
                 if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
@@ -394,6 +397,7 @@
             if (dx === 0) {
                 dx = 20;
                 dy = 0;
+                headRotation = 90; // Поворот головы вправо
                 if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
@@ -402,6 +406,7 @@
             if (dy === 0) {
                 dx = 0;
                 dy = -20;
+                headRotation = 0; // Поворот головы вперед
                 if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
@@ -410,6 +415,7 @@
             if (dy === 0) {
                 dx = 0;
                 dy = 20;
+                headRotation = 180; // Поворот головы назад
                 if (soundEnabled) moveSound.play(); // Play move sound
             }
         }
@@ -464,6 +470,14 @@
                     clearInterval(timerInterval);
                 }
             }, 1000);
+        }
+
+        function drawRotatedImage(context, image, x, y, width, height, rotation) {
+            context.save();
+            context.translate(x + width / 2, y + height / 2);
+            context.rotate(rotation * Math.PI / 180);
+            context.drawImage(image, -width / 2, -height / 2, width, height);
+            context.restore();
         }
     </script>
 </body>
