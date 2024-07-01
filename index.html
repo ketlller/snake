@@ -339,10 +339,9 @@
             snake.forEach((snakePart, index) => {
                 console.log(`Drawing snake part at (${snakePart.x}, ${snakePart.y})`);
                 if (index === 0) {
-                    drawRotatedImage(ctx, snakeHeadImage, snakePart.x, snakePart.y, 40, 40, headRotation); // Увеличено в 2 раза и поворот головы
+                    drawRotatedImage(ctx, snakeHeadImage, snakePart.x - 10, snakePart.y - 10, 40, 40, headRotation); // Увеличено в 2 раза и поворот головы
                 } else {
-                    const offsetX = (index === 0) ? 0 : 4; // Смещение вправо на 4 пикселя
-                    ctx.drawImage(snakeBodyImage, snakePart.x + offsetX, snakePart.y, 20, 20); // Размер тела по умолчанию
+                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 20, 20); // Размер тела по умолчанию
                 }
             });
         }
