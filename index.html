@@ -14,6 +14,7 @@
             overflow: hidden; /* Предотвращаем прокрутку страницы */
             height: 100vh;
             margin: 0;
+            position: relative; /* Добавлено для позиционирования таймера */
         }
         h1 {
             margin-top: 10px; /* Поднимаем заголовок выше */
@@ -30,6 +31,12 @@
             font-size: 24px;
             margin-top: 10px; /* Поднимаем счет выше */
             display: none;
+        }
+        #timer {
+            font-size: 24px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
         #controls {
             display: none;
@@ -101,10 +108,10 @@
 <body>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    
     <h1>Snake Game</h1>
     <div class="user-info" id="userInfo"></div>
-    <div id="score">Score: 0 coin</div>
+    <div id="score">Score: 0</div>
+    <div id="timer">Time: 50s</div> <!-- Таймер игры -->
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="startControls">
         <div id="notification">Управлять игрой можно водя пальцем по экрану.</div>
@@ -143,6 +150,7 @@
         const scoreDisplay = document.getElementById('score');
         const controls = document.getElementById('controls');
         const notification = document.getElementById('notification');
+        const timerDisplay = document.getElementById('timer'); // Элемент таймера
         const gameOverSound = document.getElementById('gameOverSound');
         const moveSound = document.getElementById('moveSound');
         const scoreSound = document.getElementById('scoreSound');
@@ -156,6 +164,7 @@
         let gameInterval;
         let gameTimeout;
         let soundEnabled = true;
+        let timerInterval; // Интервал для таймера
         const snakeImage = new Image();
         snakeImage.src = 'snake.png'; // Используем локальное изображение
 
@@ -264,8 +273,10 @@
             canvas.style.display = 'block';
             scoreDisplay.style.display = 'block';
             controls.style.display = 'block';
+            timerDisplay.style.display = 'block'; // Показать таймер
             clearInterval(gameInterval); // Clear any existing intervals
             clearTimeout(gameTimeout); // Clear any existing timeouts
+            clearInterval(timerInterval); // Clear any existing timer intervals
             snake = [
                 {x: 200, y: 200},
                 {x: 180, y: 200},
@@ -276,23 +287,26 @@
             dx = 20;
             dy = 0;
             score = 0;
-            scoreDisplay.textContent = 'Score: ' + score + ' coins';
+            scoreDisplay.textContent = 'Score: ' + score;
+            timerDisplay.textContent = 'Time: 50s'; // Сбросить таймер
             generateFood();
             console.log('Game started');
             gameInterval = setInterval(main, 100);
             gameTimeout = setTimeout(endGameWin, 50000); // Set game duration to 50 seconds
+            startTimer(50); // Запустить таймер
         }
 
         function stopGame() {
             clearInterval(gameInterval);
             clearTimeout(gameTimeout);
+            clearInterval(timerInterval); // Остановить таймер
         }
 
         function main() {
             if (didGameEnd()) {
                 stopGame();
                 if (soundEnabled) gameOverSound.play(); // Play game over sound
-                alert('Game Over! Your score is ' + score + ' coins');
+                alert('Game Over! Your score is ' + score);
                 return;
             }
 
@@ -301,7 +315,7 @@
             advanceSnake();
             drawSnake();
 
-            scoreDisplay.textContent = 'Score: ' + score + ' coins';
+            scoreDisplay.textContent = 'Score: ' + score;
         }
 
         function clearCanvas() {
@@ -429,6 +443,18 @@
         function toggleSound() {
             soundEnabled = !soundEnabled;
             alert('Sound ' + (soundEnabled ? 'enabled' : 'disabled'));
+        }
+
+        function startTimer(duration) {
+            let timer = duration, seconds;
+            timerInterval = setInterval(function () {
+                seconds = parseInt(timer % 60, 10);
+                timerDisplay.textContent = 'Time: ' + seconds + 's';
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                }
+            }, 1000);
         }
     </script>
 </body>
