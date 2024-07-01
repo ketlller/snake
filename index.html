@@ -288,11 +288,11 @@
             dy = 0;
             score = 0;
             scoreDisplay.textContent = 'Score: ' + score;
-            timerDisplay.textContent = 'Time: 50s'; // Сбросить таймер
+            timerDisplay.textContent = 'Time: 10s'; // Сбросить таймер
             generateFood();
             console.log('Game started');
             gameInterval = setInterval(main, 100);
-            gameTimeout = setTimeout(endGameWin, 50000); // Set game duration to 50 seconds
+            gameTimeout = setTimeout(endGameWin, 10000); // Set game duration to 50 seconds
             startTimer(50); // Запустить таймер
         }
 
