@@ -297,7 +297,7 @@
             timerDisplay.textContent = 'Time: 15s'; // Сбросить таймер
             generateFood();
             console.log('Game started');
-            gameInterval = setInterval(main, 100);
+            gameInterval = setInterval(main, 200); // Set game interval to 200ms to make the snake move slower
             gameTimeout = setTimeout(endGameWin, 15000); // Set game duration to 15 seconds
             startTimer(15); // Запустить таймер
         }
@@ -333,9 +333,9 @@
             snake.forEach((snakePart, index) => {
                 console.log(`Drawing snake part at (${snakePart.x}, ${snakePart.y})`);
                 if (index === 0) {
-                    ctx.drawImage(snakeHeadImage, snakePart.x, snakePart.y, 20, 20);
+                    ctx.drawImage(snakeHeadImage, snakePart.x, snakePart.y, 40, 40); // Увеличено в 2 раза
                 } else {
-                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 20, 20);
+                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 40, 40); // Увеличено в 2 раза
                 }
             });
         }
@@ -428,7 +428,7 @@
         }
 
         function drawFood() {
-            ctx.drawImage(foodImage, food.x, food.y, 20, 20);
+            ctx.drawImage(foodImage, food.x, food.y, 40, 40); // Увеличено в 2 раза
         }
 
         function generateFood() {
