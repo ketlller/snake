@@ -341,7 +341,7 @@
                 if (index === 0) {
                     drawRotatedImage(ctx, snakeHeadImage, snakePart.x, snakePart.y, 40, 40, headRotation); // Увеличено в 2 раза и поворот головы
                 } else {
-                    ctx.drawImage(snakeBodyImage, snakePart.x, snakePart.y, 20, 20); // Размер тела по умолчанию
+                    ctx.drawImage(snakeBodyImage, snakePart.x - 10, snakePart.y - 10, 40, 40); // Размер тела увеличен в 2 раза и центрирование
                 }
             });
         }
