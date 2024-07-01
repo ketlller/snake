@@ -72,14 +72,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: -17px; /* Опускаем кнопки на 5 миллиметров (5 мм = 15 пикселей) */
+            margin-top: -17px; /* Поднимаем кнопки на 7 миллиметров (7 мм = 27 пикселей) */
         }
         #buttons {
             display: flex;
             justify-content: space-between;
             width: 400px;
             position: relative;
-            top: -15px; /* Опускаем кнопки старт/стоп на 5 миллиметров (5 мм = 15 пикселей) */
+            top: -4px; /* Опускаем кнопки старт/стоп на 2 миллиметра (2 мм = 6 пикселей) */
         }
         #buttons button {
             padding: 10px 20px;
@@ -102,6 +102,7 @@
             font-size: 18px;
             color: red;
             text-align: center;
+            margin-top: 15px; /* Опускаем текст на 5 миллиметров (5 мм = 15 пикселей) */
         }
     </style>
 </head>
@@ -175,7 +176,7 @@
 
         snakeHeadImage.src = 'snake_head.png'; // Используем изображение головы змеи
         snakeBodyImage.src = 'snake_body.png'; // Используем изображение тела змеи
-        foodImage.src = 'My_Coin.gif'; // Используем изображение монеты
+        foodImage.src = 'coin.png'; // Используем изображение монеты
         grassImage.src = 'grass.png'; // Используем изображение травы
         splashScreenImg.src = 'splash.png'; // Используем изображение заставки
 
