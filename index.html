@@ -166,29 +166,33 @@
         let soundEnabled = true;
         let timerInterval; // Интервал для таймера
         let headRotation = 0; // Поворот головы змеи
+
         const snakeHeadImage = new Image();
-        snakeHeadImage.src = 'snake_head.png'; // Используем изображение головы змеи
-
         const snakeBodyImage = new Image();
-        snakeBodyImage.src = 'snake_body.png'; // Используем изображение тела змеи
-
         const foodImage = new Image();
-        foodImage.src = 'coin.png'; // Используем изображение монеты
-
         const grassImage = new Image();
-        grassImage.src = 'grass.png'; // Используем изображение травы
-
         const splashScreenImg = new Image();
+
+        snakeHeadImage.src = 'snake_head.png'; // Используем изображение головы змеи
+        snakeBodyImage.src = 'snake_body.png'; // Используем изображение тела змеи
+        foodImage.src = 'coin.png'; // Используем изображение монеты
+        grassImage.src = 'grass.png'; // Используем изображение травы
         splashScreenImg.src = 'splash.png'; // Используем изображение заставки
 
-        splashScreenImg.onload = function() {
+        // Проверка загрузки изображений
+        snakeHeadImage.onload = () => console.log('Snake head image loaded');
+        snakeHeadImage.onerror = () => console.error('Failed to load snake head image');
+        snakeBodyImage.onload = () => console.log('Snake body image loaded');
+        snakeBodyImage.onerror = () => console.error('Failed to load snake body image');
+        foodImage.onload = () => console.log('Food image loaded');
+        foodImage.onerror = () => console.error('Failed to load food image');
+        grassImage.onload = () => console.log('Grass image loaded');
+        grassImage.onerror = () => console.error('Failed to load grass image');
+        splashScreenImg.onload = () => {
             console.log('Splash screen image loaded');
             ctx.drawImage(splashScreenImg, 0, 0, canvas.width, canvas.height);
         };
-
-        splashScreenImg.onerror = function() {
-            console.error('Failed to load splash screen image');
-        };
+        splashScreenImg.onerror = () => console.error('Failed to load splash screen image');
 
         document.addEventListener('keydown', changeDirection);
 
